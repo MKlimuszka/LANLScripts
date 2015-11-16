@@ -1,0 +1,51 @@
+r *src
+
+fg line 0 0 ber 0 d &1,delta npts &1,npts
+SETBB counter 0
+
+DO fnm WILD *src
+addf $fnm
+setbb counter ( %counter% + 1 )
+ENDDO
+
+DIV %counter%
+W source_average.s
+
+r *src
+setbb temp &1,kevnm
+r source_average.s
+chnhdr kevnm %temp
+w over
+
+ygrid on
+ydiv i .125
+width 3
+TITLE " Degelen Source Spectra Average"
+YLABEL " Circles @(1/8 divisions@)"
+XLABEL " Frequency @( Hz @) "
+xlim .5 2
+ylim 0 2
+cut 0.5 2
+r source_average.s
+RTR
+FG L %RTR_SLP %RTR_YINT BE 0
+PLABEL 1 OFF
+PLABEL " Slope:  %RTR_SLP%"  S TINY P .12 .5
+PLABEL " Intercept:  %RTR_YINT%"
+PLABEL " Correlation CF:  %RTR_CORRCF%"
+
+
+bd sgf
+bf
+LINE 2
+Symbol off
+color black
+fileid off
+qdp off
+p1
+Line 1
+r source_average.s
+p1
+ef
+ydiv i .25
+width 1

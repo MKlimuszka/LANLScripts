@@ -1,0 +1,30 @@
+* macro to compute the envelope of a band-pass filtered Rg wave
+*
+* inputs: (1) SAC file name and (2) center frequency of band-pass fileter
+*
+setbb fnm $1
+setbb fcntr $2
+*
+* compute corner frequencies of band-pass filter
+*
+setbb flc ( %fcntr * 0.7500 )
+setbb fhc ( %fcntr * 1.3333 )
+*
+cut off
+r %fnm
+rmean
+taper
+w trace.s
+*
+cuterr fi
+cut b n 500
+r trace.s
+*
+* filter
+*
+bp co %flc %fhc n 2 p 2
+envelope
+W env.s
+R env.s
+MARKVALUE GE ( &1,DEPMAX * 0.999 )
+SETBB time &1,T0

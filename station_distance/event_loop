@@ -1,0 +1,17 @@
+TRANSCRIPT CREATE FILE distances.txt
+TRANSCRIPT CLOSE FILE distances.txt
+
+SETBB evlat 50.1255
+SETBB evlon 78.0402
+SETBB event "10/16/87"
+macro compute_dis
+
+SETBB evlat 49.7742
+SETBB evlon 77.9986
+SETBB event "05/06/87"
+macro compute_dis
+
+SETBB evlat 49.7664
+SETBB evlon 78.0287
+SETBB event "07/17/87"
+macro compute_dis

@@ -1,0 +1,98 @@
+*Initialize
+
+
+*Set period, distance, and number of poles for butterworth filter.
+SETBB T 1
+SETBB DIS 10
+SETBB POLES 2 
+
+MACRO ../../../../scripts/my_scripts/Mrg_v_LOGW_mod/initialize
+
+*Read delay times
+MACRO ../../../../scripts/my_scripts/Mrg_v_LOGW_mod/readdelay
+
+
+*************************************
+**Read damage files, scale them for depth, scale them for k, add time shift, and write files to output dir
+*************************************
+CUTERR FI
+
+
+DO fnm wild dmg*.s
+READ $fnm
+SETBB sacfnm $fnm
+SETBB dob (before .s %sacfnm )
+SETBB dob (after _ %dob )
+
+SETBB CAVITYR ( ( 434 * ( %dob ** 0.75 ) ) / ( ( %ALPHA ** 0.612 ) * ( %RHO ** 0.25 ) ) )
+SETBB TEMP ( ( 4 * ( PI ) ) / 3 )
+SETBB CAVITYV ( %TEMP * ( %CAVITYR ** 3 ) )
+SETBB MT ( %RHALSQ * %CAVITYV )
+
+SETBB SCALE ( %MT / ( 10 ** 15 ) )
+
+MUL %SCALE
+MUL ( %kvalue - 1 )
+INT
+STRETCH 4
+WRITE DIR %outdir% dmgscaled_%dob% 
+
+***Time shift
+MACRO ../../../../scripts/my_scripts/Mrg_v_LOGW_mod/timeshift
+
+ENDDO
+
+CUT OFF
+
+*************************************
+**Read explosion files, scale them for depth, and write them to output directory
+*************************************
+
+DO fnm wild mono*.s
+READ $fnm
+SETBB sacfnm $fnm
+SETBB dob (before .s %sacfnm )
+SETBB dob (after _ %dob )
+
+SETBB CAVITYR ( ( 434 * ( %dob ** 0.75 ) ) / ( ( %ALPHA ** 0.612 ) * ( %RHO ** 0.25 ) ) )
+SETBB TEMP ( ( 4 * ( PI ) ) / 3 )
+SETBB CAVITYV ( %TEMP * ( %CAVITYR ** 3 ) )
+SETBB MT ( %RHALSQ * %CAVITYV )
+
+SETBB SCALE ( %MT / ( 10 ** 15 ) )
+
+MUL %SCALE
+INT
+STRETCH 4
+WRITE DIR %outdir% monoscaled_%dob%
+
+ENDDO
+
+*************************************
+**Read scaled explosions, add the scaled damage to them, and write the combined file to the output directory
+*************************************
+
+R %outdir%/m*
+ADDF %outdir%/dmgscaled_077 %outdir%/dmgscaled_084  %outdir%/dmgscaled_091  %outdir%/dmgscaled_101  %outdir%/dmgscaled_110  %outdir%/dmgscaled_150 %outdir%/dmgscaled_200 %outdir%/dmgscaled_320
+WRITE  DIR %outdir CHANGE monoscaled Sum-shifted-K%kvalue% 
+
+
+*************************************
+*Determine if SUM is in phase with explosion or damage or neither
+*************************************
+MACRO ../../../../scripts/my_scripts/Mrg_v_LOGW_mod/determine_phase
+
+
+*************************************
+**Now, actually compute Mrg and write data table
+*************************************
+*Compute Mrg
+MACRO ../../../../../scripts/my_scripts/Mrg_v_LOGW_mod/cMrg
+
+*************************************
+**Plot data and perform linear fit
+*************************************
+TITLE "Mrg vs. LOG[W] for Step Source with Delayed Damage for K = %kvalue% for SDOB = 75m"
+MACRO ../../../../../scripts/my_scripts/Mrg_v_LOGW_mod/plotmrg
+
+

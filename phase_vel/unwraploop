@@ -1,0 +1,23 @@
+color r i list r blu bla g c ma
+xlim .5 2
+bd sgf
+cd station1
+setbb t 3.5
+macro ../cutunwrap
+p2
+cd ../station2
+setbb t 4.5
+macro ../cutunwrap
+p2
+cd ../station3
+setbb t 6
+macro ../cutunwrap
+p2
+cd ../station4
+setbb t 5
+macro ../cutunwrap
+p2
+cd ../station5
+setbb t 8
+macro ../cutunwrap
+p2

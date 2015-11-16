@@ -1,0 +1,46 @@
+
+*These locations were computed from the geometric solutions to the locations and distances from events  11/23 and 10/16
+FG line 0 0 
+*******************************************
+CHNHDR STLA 49.8910
+CHNHDR STLO 77.9689
+
+CHNHDR EVLA %evlat
+CHNHDR EVLO %evlon
+
+WRITE temphdr
+
+TRANSCRIPT OPEN FILE distances.txt CON O
+MESSAGE "%event%   	Station 1   	&1,DIST&"
+TRANSCRIPT CLOSE FILE distances.txt CON O
+
+*******************************************
+*******************************************
+CHNHDR STLA 49.7763
+CHNHDR STLO 77.9967
+
+CHNHDR EVLA %evlat
+CHNHDR EVLO %evlon
+
+WRITE temphdr
+
+TRANSCRIPT OPEN FILE distances.txt CON O
+MESSAGE "%event%   	Station 2   	&1,DIST&"
+TRANSCRIPT CLOSE FILE distances.txt CON O
+
+*******************************************
+*******************************************
+CHNHDR STLA 49.7685
+CHNHDR STLO 78.0339
+
+
+CHNHDR EVLA %evlat
+CHNHDR EVLO %evlon
+
+WRITE temphdr
+
+TRANSCRIPT OPEN FILE distances.txt CON O
+MESSAGE "%event%   	Station 3   	&1,DIST&"
+TRANSCRIPT CLOSE FILE distances.txt CON O
+
+*******************************************

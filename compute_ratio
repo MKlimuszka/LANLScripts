@@ -1,0 +1,23 @@
+r sc*
+fft
+wsp am
+r m*
+int
+fft
+wsp am
+r m*.am
+DIVF scaled_100.am scaled_200.am scaled_25.am scaled_400.am scaled_50.am scaled_800.am
+xlim .10 10
+w prepend ratio
+xlabel "Frequency @(Hz@)"
+ylabel "MM to Step Ratio"
+fileid off
+loglog
+window 1 x 0 0.4
+bd sgf
+p2
+sgftops *sgf ratios.ps 2 s
+0
+0
+0
+1

@@ -1,0 +1,23 @@
+***************************************************
+TRANSCRIPT OPEN FILE velocity.txt CON O
+MESSAGE "Frequency			Slowness		Delta Slowness		Phase Velocity		C+		C-"
+TRANSCRIPT CLOSE FILE velocity.txt
+***************************************************
+TRANSCRIPT OPEN FILE scrap
+TRANSCRIPT CLOSE FILE scrap
+
+Do flnm WILD ?.*.txt
+RA content xy $flnm
+SETBB freq ( before .txt $flnm )
+RTR
+setbb c ( 1 / %RTR_SLP )
+setbb cplus ( 1 / ( %RTR_SLP - %RTR_SDSLP ) )
+setbb cminus ( 1 / ( %RTR_SLP + %RTR_SDSLP ) )
+
+
+***************************************************
+TRANSCRIPT OPEN FILE velocity.txt CON O
+MESSAGE "%freq%		%RTR_SLP%		%RTR_SDSLP%		%c%		%cplus%		%cminus% "
+TRANSCRIPT CLOSE FILE velocity.txt
+***************************************************
+ENDDO

@@ -1,0 +1,26 @@
+SC mkdir equalized
+
+* 11/23/88
+BINOPERR NPTS IGNORE DELTA FATAL
+
+SETBB dis 141
+SETBB DELTABB .44
+MACRO ../../../../../../scripts/my_scripts/equalizations/makepert
+
+SETBB dis 175
+SETBB DELTABB .49
+MACRO ../../../../../../scripts/my_scripts/equalizations/makepert
+
+SETBB dis 223
+SETBB DELTABB 0.41
+MACRO ../../../../../../scripts/my_scripts/equalizations/makepert
+
+SETBB dis 299
+SETBB DELTABB 0.47
+MACRO ../../../../../../scripts/my_scripts/equalizations/makepert
+
+SETBB dis 393
+SETBB DELTABB 1.21
+MACRO ../../../../../../scripts/my_scripts/equalizations/makepert
+
+

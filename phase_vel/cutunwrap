@@ -1,0 +1,15 @@
+fg line 1 0 delta 0.02170139 npts 257
+mul %t
+MUL ( 2 * ( PI ) )
+write temp.s
+cuterr fi
+cut %t ( %t + 35 )
+r *.sac
+taper w 0.05
+unwrap
+wsp over
+cut off
+r *.sac.ph
+subf temp.s
+div ( 2 * ( PI ) ) 
+write over

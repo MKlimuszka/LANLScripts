@@ -1,0 +1,74 @@
+
+mkdir begin_zero
+sc chmod 777 *
+*Read in file
+DO fnm wild z*.sac
+READ $fnm
+
+*Check to see how the beginning of the file relates to zero. 
+IF &1,B EQ 0
+*just rewrite
+RTR
+TAPER w 0.1
+WRITE DIR begin_zero $fnm
+
+ELSEIF &1,B LE 0
+*cut from zero to end
+RTR
+TAPER w 0.1
+CUT 0 E
+READ $fnm
+WRITE DIR begin_zero $fnm
+
+ELSE
+*pad with zeroes
+RTR
+TAPER w 0.1
+WRITE temp.sac
+CUTERR FI
+CUT 0 E
+READ temp.sac
+WRITE DIR begin_zero $fnm
+sc rm temp.sac
+
+ENDIF
+
+*turn cut off for next loop
+CUT OFF
+
+
+*check to make sure it's zero
+READ begin_zero/$fnm$
+IF ( ABS &1,B ) LE &1,DELTA
+CHNHDR B 0
+WRITE DIR begin_zero $fnm
+ENDIF
+
+*filter
+mkdir begin_zero/filtered
+sc chmod 777 *
+READ begin_zero/$fnm$
+BP co 0.5 2.0 n 2 p 2
+WRITE change .sac _filtered.sac DIR begin_zero/filtered 
+
+ENDDO
+
+
+***Unwrap
+CD begin_zero/filtered
+
+SC mkdir unwrapped
+cuterr fi
+cut 0 45
+DO fnm wild *.sac
+READ $fnm
+
+DEC 3
+DEC 3
+
+UNWRAP 
+WSP AMPH ( before .sac $fnm )
+
+ENDDO
+SC mv *am unwrapped/
+SC mv *ph unwrapped/

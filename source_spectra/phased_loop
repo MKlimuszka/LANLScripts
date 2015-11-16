@@ -1,0 +1,19 @@
+SETBB distance 13.66
+SETBB st 1
+macro phased
+
+SETBB distance 17.01
+SETBB st 2
+macro phased
+
+SETBB distance 21.89
+SETBB st 3
+macro phased
+
+SETBB distance 29.43
+SETBB st 4
+macro phased
+
+SETBB distance 38.09
+SETBB st 5
+macro phased

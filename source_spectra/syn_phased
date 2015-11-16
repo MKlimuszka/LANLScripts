@@ -1,0 +1,62 @@
+binoperr npts ignore
+RA content iiy %path%
+CHNHDR delta .01
+MUL %distance
+DIV ( 2 * ( PI ) )
+WRITE temp.sac
+
+
+
+READ Sum*
+BP BU CO 0.1 2.2 N 2 P 2
+unwrap
+wsp over
+r *ph
+SETBB b &1,b
+SETBB e &1,e
+SETBB delta &1,delta
+SETBB npts &1,npts
+r temp.sac
+INTERPOLATE D %delta B %b N %npts
+W over
+cut off
+r *ph
+DIV ( 2 * ( PI ) )
+INTERPOLATE D %delta B %b N %npts
+
+
+ADDF temp.sac
+DIV -1
+WRITE append src
+
+
+DO fname WILD *src
+cut .5 2
+r $fname$
+SETBB stop 0
+
+SETBB mod 0
+WHILE %stop% EQ 0
+IF &1,DEPMIN LE 0
+SETBB mod ( %mod% + 1 )
+add 1
+ELSEIF &1,DEPMIN GE 1
+SETBB mod ( %mod% - 1 )
+sub 1
+ELSE
+SETBB stop 1
+ENDIF
+ENDDO
+
+CUT OFF
+r 
+add %mod%
+w over
+ENDDO
+
+
+sc mkdir spectra
+sc mv *src spectra
+sc rm temp.sac
+sc rm *ph 
+sc rm *am

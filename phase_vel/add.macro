@@ -1,0 +1,26 @@
+ cd station1
+ r *.sac.ph
+ sub 0 0 0 0 -1 0 -1 0
+ add 0
+ write alpha over change .sac -alpha
+ cd ../station2
+ r
+ sub 0
+ add 0
+ write alpha over change .sac -alpha
+ cd ../station3
+ r
+ sub 0 0 0 -1 0 0 0
+ add 0
+ write alpha over change .sac -alpha
+ cd ../station4
+ r
+ SUB 0 -1 0 0 0
+ add 0
+ write alpha over change .sac -alpha
+ cd ../station5
+ r
+ sub 1 1 0 0 -2
+ add 0
+ write alpha over change .sac -alpha
+ 

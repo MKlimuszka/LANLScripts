@@ -1,0 +1,73 @@
+**Compute MRG
+
+************************************************
+TRANSCRIPT CREATE FILE data_k%kvalue% CON O
+MESSAGE "LOGW	Mrg	Arg	DOB	Expl Ph	Dmg Ph"
+TRANSCRIPT CLOSE FILE data_k%kvalue%
+*************************************************
+
+*Need dummy values in here to make sure SOMETHING plots.
+***************************************************
+TRANSCRIPT OPEN FILE explphase CON O
+MESSAGE "100		100"
+MESSAGE "100		100"
+TRANSCRIPT CLOSE FILE explphase
+***************************************************
+***************************************************
+TRANSCRIPT OPEN FILE dmgphase CON O
+MESSAGE "100		100"
+MESSAGE "100		100"
+TRANSCRIPT CLOSE FILE dmgphase
+***************************************************
+
+DO fnm wild Sum*
+READ $fnm
+SETBB dob (after _ $fnm )
+SETBB logW ( MUL 3 ( ALOG10 ( DIV %dob 75 ) ) )
+
+BP BU CO ( ( 1 / %T ) - %FC ) ( ( 1 / %T ) + %FC )  N %POLES P 2
+
+IF &1,DEPMAX GE ( ABS &1,DEPMIN )
+SETBB arg &1,DEPMAX
+ELSE
+SETBB arg ( ABS &1,DEPMIN )
+ENDIF
+
+SETBB mrg (ADD %CONST ( ALOG10 %arg ) )
+SETBB TEMP0 &1,USER0
+SETBB TEMP1 &1,USER1
+***************************************************
+TRANSCRIPT OPEN FILE data_k%kvalue% CON O
+MESSAGE "%logW%	%mrg%	%arg%	%dob%	%TEMP0%	%TEMP1%"
+TRANSCRIPT CLOSE FILE data_k%kvalue%
+***************************************************
+READHDR $fnm
+*If expl Fr < dmg Fr
+IF &1,USER0 LE &1,USER1
+IF &1,USER0 LE 0.15
+CHNHDR USER2 0
+***************************************************
+TRANSCRIPT OPEN FILE explphase CON O
+MESSAGE "%logW%	%mrg%	%dob%"
+MESSAGE "%logW%	%mrg%	%dob%"
+TRANSCRIPT CLOSE FILE explphase
+***************************************************
+ENDIF
+
+*If dmg Fr < expl Fr
+ELSEIF &1,USER1 LE &1,USER0
+IF &1,USER1 LE 0.15
+CHNHDR USER2 1
+***************************************************
+TRANSCRIPT OPEN FILE dmgphase CON O
+MESSAGE "%logW%	%mrg%	%dob%"
+MESSAGE "%logW%	%mrg%	%dob%"
+TRANSCRIPT CLOSE FILE dmgphase
+***************************************************
+ENDIF
+
+ENDIF
+
+
+ENDDO
+

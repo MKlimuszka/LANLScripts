@@ -1,0 +1,89 @@
+*************************************
+*Determine if SUM is in phase with explosion or damage or neither
+*************************************
+cd %outdir%
+
+
+* produce phase difference graphs
+cuterr fi
+SC mkdir diff
+
+do fnm wild Sum*
+IF %T EQ 1
+cut 0 10
+ELSEIF $T EQ 20
+CUT 0 400
+ENDIF
+READ $fnm
+setbb dob (after _ $fnm )
+
+if %kvalue% EQ 3.2
+taper
+endif
+BP BU CO ( ( 1 / %T ) - %FC ) ( ( 1 / %T ) + %FC )  N %POLES P 2
+DEC 3
+IF %T EQ 20
+DEC 4
+DEC 4
+ENDIF
+UNWRAP 
+WSP sum
+
+READ m*%dob
+BP BU CO ( ( 1 / %T ) - %FC ) ( ( 1 / %T ) + %FC )  N %POLES P 2
+DEC 3
+IF %T EQ 20
+DEC 4
+DEC 4
+ENDIF
+UNWRAP
+WSP mono
+
+READ d*%dob
+BP BU CO ( ( 1 / %T ) - %FC ) ( ( 1 / %T ) + %FC )  N %POLES P 2
+DEC 3
+IF %T EQ 20
+DEC 4
+DEC 4
+ENDIF
+UNWRAP
+WSP dmg
+
+
+cut off
+
+READ sum.ph
+SUBF dmg.ph
+DIV ( (PI) * 2 )
+WRITE DIR diff diffdmg_%dob%.s
+
+
+READ sum.ph
+SUBF mono.ph
+DIV ( (PI) * 2 )
+WRITE DIR diff diffmon_%dob%.s
+
+SC rm sum.ph sum.am mono.am mono.ph dmg.am dmg.ph
+
+*write explosion coefficient
+CUT ( ( 1 / %T ) - ( %FC / 3 ) ) ( ( 1 / %T ) +  ( %FC / 3 ) )
+READ diff/diffmon_%dob%.s
+*set TEMP to be fraction of circle of difference
+SETBB TEMP0 ( ABS ( &1,DEPMEN - ( INT &1,DEPMEN ) ) ) 
+READ diff/diffdmg_%dob%.s
+SETBB TEMP1 ( ABS ( &1,DEPMEN - ( INT &1,DEPMEN ) ) ) 
+READHDR $fnm 
+*Set header BB values equal to explosion and dmg fractions between 0 and 0.5
+IF %TEMP0 GE 0.5
+SETBB TEMP0 ( 1 - %TEMP0 )
+ENDIF
+IF %TEMP1 GE 0.5
+SETBB TEMP1 ( 1 - %TEMP1 )
+ENDIF
+
+CHNHDR USER0 %TEMP0
+CHNHDR USER1 %TEMP1
+CUT OFF
+WRITEHDR OVER
+
+ENDDO

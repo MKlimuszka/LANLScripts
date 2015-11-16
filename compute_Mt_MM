@@ -1,0 +1,103 @@
+SETBB ALPHA 5100
+SETBB RHO 2500
+SETBB RHALSQ ( %RHO * ( %ALPHA ** 2 ) )
+
+MESSAGE "Output file name?"
+SETBB FILENAME $Output_Location$ 
+
+TRANSCRIPT CREATE FILE %FILENAME% CON O
+MESSAGE "	DOB		Mt"
+TRANSCRIPT CLOSE
+
+
+
+***************************************************************************
+SETBB dob 25
+SETBB dobkm ( %dob / 1000 )
+
+SETBB W (  ( %dob / 120 ) ** 3 )
+SETBB CAVITYR ( ( 10.47 * ( %W ** 0.29 ) ) * ( %dobkm ** -0.11 ) )
+SETBB TEMP ( ( 4 * ( PI ) ) / 3 )
+SETBB CAVITYV ( %TEMP * ( %CAVITYR ** 3 ) )
+SETBB MT ( %RHALSQ * %CAVITYV )
+
+
+TRANSCRIPT OPEN FILE %FILENAME% CON O
+MESSAGE "%dob%	%MT%"
+TRANSCRIPT CLOSE
+
+***************************************************************************
+SETBB dob 50
+SETBB dobkm ( %dob / 1000 )
+
+SETBB W (  ( %dob / 120 ) ** 3 )
+SETBB CAVITYR ( ( 10.47 * ( %W ** 0.29 ) ) * ( %dobkm ** -0.11 ) )
+SETBB TEMP ( ( 4 * ( PI ) ) / 3 )
+SETBB CAVITYV ( %TEMP * ( %CAVITYR ** 3 ) )
+SETBB MT ( %RHALSQ * %CAVITYV )
+
+
+TRANSCRIPT OPEN FILE %FILENAME% CON O
+MESSAGE "%dob%	%MT%"
+TRANSCRIPT CLOSE
+
+***************************************************************************
+SETBB dob 100
+SETBB dobkm ( %dob / 1000 )
+
+SETBB W (  ( %dob / 120 ) ** 3 )
+SETBB CAVITYR ( ( 10.47 * ( %W ** 0.29 ) ) * ( %dobkm ** -0.11 ) )
+SETBB TEMP ( ( 4 * ( PI ) ) / 3 )
+SETBB CAVITYV ( %TEMP * ( %CAVITYR ** 3 ) )
+SETBB MT ( %RHALSQ * %CAVITYV )
+
+
+TRANSCRIPT OPEN FILE %FILENAME% CON O
+MESSAGE "%dob%	%MT%"
+TRANSCRIPT CLOSE
+
+***************************************************************************
+SETBB dob 200
+SETBB dobkm ( %dob / 1000 )
+
+SETBB W (  ( %dob / 120 ) ** 3 )
+SETBB CAVITYR ( ( 10.47 * ( %W ** 0.29 ) ) * ( %dobkm ** -0.11 ) )
+SETBB TEMP ( ( 4 * ( PI ) ) / 3 )
+SETBB CAVITYV ( %TEMP * ( %CAVITYR ** 3 ) )
+SETBB MT ( %RHALSQ * %CAVITYV )
+
+
+TRANSCRIPT OPEN FILE %FILENAME% CON O
+MESSAGE "%dob%	%MT%"
+TRANSCRIPT CLOSE
+
+***************************************************************************
+SETBB dob 400
+SETBB dobkm ( %dob / 1000 )
+
+SETBB W (  ( %dob / 120 ) ** 3 )
+SETBB CAVITYR ( ( 10.47 * ( %W ** 0.29 ) ) * ( %dobkm ** -0.11 ) )
+SETBB TEMP ( ( 4 * ( PI ) ) / 3 )
+SETBB CAVITYV ( %TEMP * ( %CAVITYR ** 3 ) )
+SETBB MT ( %RHALSQ * %CAVITYV )
+
+
+TRANSCRIPT OPEN FILE %FILENAME% CON O
+MESSAGE "%dob%	%MT%"
+TRANSCRIPT CLOSE
+
+***************************************************************************
+SETBB dob 800
+SETBB dobkm ( %dob / 1000 )
+
+SETBB W (  ( %dob / 120 ) ** 3 )
+SETBB CAVITYR ( ( 10.47 * ( %W ** 0.29 ) ) * ( %dobkm ** -0.11 ) )
+SETBB TEMP ( ( 4 * ( PI ) ) / 3 )
+SETBB CAVITYV ( %TEMP * ( %CAVITYR ** 3 ) )
+SETBB MT ( %RHALSQ * %CAVITYV )
+
+
+TRANSCRIPT OPEN FILE %FILENAME% CON O
+MESSAGE "%dob%	%MT%"
+TRANSCRIPT CLOSE
+

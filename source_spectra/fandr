@@ -1,0 +1,15 @@
+TRANSCRIPT CREATE FILE fit.txt CON O
+MESSAGE "File          Slope @(group delay in s@)         SD"
+TRANSCRIPT CLOSE FILE fit.txt
+
+
+
+DO fnm WILD station?/*
+Message "$fnm$"
+cut 0.5 2
+READ $fnm
+RTR
+TRANSCRIPT OPEN FILE fit.txt CON O
+MESSAGE "$fnm$          %RTR_SLP%          %RTR_SDSLP%"
+TRANSCRIPT CLOSE FILE fit.txt
+ENDDO

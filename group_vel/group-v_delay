@@ -1,0 +1,50 @@
+cd station1
+Transcript CREATE FILE ../group_velocity.txt CON O
+MESSAGE "Frequency		Distance		Time		Group Velocity"
+TRANSCRIPT CLOSE FILE ../group_velocity.txt
+
+DO dire LIST station1 station2 station3 station4 station5 
+cd ../$dire$
+IF $dire$ EQ station1
+SETBB distance 13.66
+SETBB delay 0.55
+ELSEIF $dire$ EQ station2
+SETBB distance 17.01
+SETBB delay 0.65
+ELSEIF $dire$ EQ station3
+SETBB distance 21.89
+SETBB delay 0.59
+ELSEIF $dire$ EQ station4
+SETBB distance 29.43
+SETBB delay 0.13
+ELSEIF $dire$ EQ station5
+SETBB distance 38.09
+SETBB delay 0.78
+
+ENDIF
+
+
+
+
+
+
+SETBB fr 0.5
+WHILE %fr% LE 2
+
+DO file WILD *.sac
+r $file$
+SETBB fl $file$
+macro ../rg_envelope.macro %fl% %fr%
+
+SETBB vel ( %distance% / ( %time% - %delay% ))
+
+Transcript OPEN FILE ../group_velocity_wdelay.txt CON O
+MESSAGE "%fr%    		    %distance%    		    %time%    		    %vel%		$file$"
+TRANSCRIPT CLOSE FILE ../group_velocity_wdelay.txt
+
+
+ENDDO
+SETBB fr ( %fr% + 0.05 )
+ENDDO
+ENDDO
+cd ..

@@ -1,0 +1,30 @@
+*Make phase perturbation with delta taken from DELTABB
+
+FG line 1 0 be 0 DELTA 2e-03 NPTS 4094
+MUL ( 2 * ( PI ) )
+MUL %DELTABB
+DIVF ../../../proc_data/velocity_profiles/balapan/bala_phase_vel.sac
+WRITE temp.s
+
+READHDR *%dis%*.ph
+setbb sample &1,DELTA
+READ temp.s
+INTERPOLATE DELTA %sample%
+WRITE temp.s
+READ *%dis%*.ph
+ADDF temp.s
+WRITE change _filtered -pert
+
+READ *%dis%*.am
+WRITE change _filtered -pert
+
+DO fnm wild *%dis%*pert.ph
+RSP ( before .ph $fnm )
+IFFT
+WRITE append .sac
+SC mv *.sac equalized
+SC cp *-pert.ph equalized
+SC cp  *-pert.am equalized
+ENDDO
+
+sc rm *pert* temp.s

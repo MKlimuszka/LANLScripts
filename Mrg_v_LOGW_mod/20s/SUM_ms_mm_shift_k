@@ -1,0 +1,81 @@
+*Initialize
+*Set period, distance, and number of poles for butterworth filter.
+
+SETBB T 20
+SETBB DIS 500
+SETBB POLES 3 
+
+MACRO /home/mklim/For_Howard/scripts/Mrg_v_LOGW/initialize
+
+*Read delay times
+MACRO /home/mklim/For_Howard/scripts/Mrg_v_LOGW/readdelay
+
+*************************************
+**Read damage files,scale them for k, add time shift, stretch, and write files to output dir
+*************************************
+CUTERR FI
+
+
+DO fnm wild dmg*.s
+READ $fnm
+SETBB sacfnm $fnm
+SETBB dob (before .s %sacfnm )
+SETBB dob (after _ %dob )
+
+
+MUL ( %kvalue - 1 )
+INT
+STRETCH 4
+WRITE DIR %outdir% dmgscaled_%dob% 
+
+***Time shift
+MACRO /home/mklim/For_Howard/scripts/Mrg_v_LOGW/timeshift
+
+ENDDO
+
+cut off
+
+*************************************
+**Read explosion files, stretch, and write them to output directory
+*************************************
+
+DO fnm wild mono*.s
+READ $fnm
+SETBB sacfnm $fnm
+SETBB dob (before .s %sacfnm )
+SETBB dob (after _ %dob )
+
+INT
+STRETCH 4
+WRITE %outdir%/monostretch_%dob%
+
+ENDDO
+
+*************************************
+**Read stretched  explosions, add the scaled damage to them, and write the combined file to the output directory
+*************************************
+
+R %outdir%/monostretch*
+ADDF %outdir%/dmgscaled_025 %outdir%/dmgscaled_050  %outdir%/dmgscaled_100  %outdir%/dmgscaled_200  %outdir%/dmgscaled_400  %outdir%/dmgscaled_800
+WRITE  DIR %outdir CHANGE monostretch Sum-shifted-K%kvalue% 
+
+*************************************
+*Determine if SUM is in phase with explosion or damage or neither
+*************************************
+MACRO /home/mklim/For_Howard/scripts/Mrg_v_LOGW/determine_phase
+
+
+*************************************
+**Now, actually compute Ms and write data table
+*************************************
+**Compute Ms
+MACRO /home/mklim/For_Howard/scripts/Mrg_v_LOGW/cMrg
+
+*************************************
+**Plot data and perform linear fit
+*************************************
+
+TITLE "Ms @(at T = 20s @) vs. LOG[W] for MM Source with Delayed Damage for K = %kvalue%"
+MACRO /home/mklim/For_Howard/scripts/Mrg_v_LOGW/plotmrg
+
+

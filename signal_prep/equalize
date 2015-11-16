@@ -1,0 +1,29 @@
+SC mkdir equalized
+
+* 07/17/87
+BINOPERR NPTS IGNORE DELTA FATAL
+
+SETBB dis 145
+SETBB DELTABB 0.83
+MACRO /home/mklim/For_Howard/scripts/makepert
+
+SETBB dis 180
+SETBB DELTABB 1
+MACRO /home/mklim/For_Howard/scripts/makepert
+
+SETBB dis 306
+SETBB DELTABB 1.15
+MACRO /home/mklim/For_Howard/scripts/makepert
+
+SETBB dis 505
+SETBB DELTABB 1.28
+MACRO /home/mklim/For_Howard/scripts/makepert
+
+SETBB dis 719
+SETBB DELTABB 1.66
+MACRO /home/mklim/For_Howard/scripts/makepert
+
+SETBB dis 839
+SETBB DELTABB 2.62
+MACRO /home/mklim/For_Howard/scripts/makepert
+

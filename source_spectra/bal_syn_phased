@@ -1,0 +1,4 @@
+setbb path ../balapan_phase_delay.txt
+setbb distance 10
+
+macro ../../../../scripts/my_scripts/source_spectra/syn_phased

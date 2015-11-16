@@ -1,0 +1,69 @@
+*Initialize
+
+*Set period, distance, and number of poles for butterworth filter.
+SETBB T 1
+SETBB DIS 10
+SETBB POLES 2 
+
+MACRO ../../../../scripts/my_scripts/Mrg_v_LOGW_mod/initialize
+
+
+*************************************
+**Read damage files,scale them for k, and write files to output dir
+*************************************
+
+
+DO fnm wild dmg*.s
+READ $fnm
+SETBB sacfnm $fnm
+SETBB dob (before .s %sacfnm )
+SETBB dob (after _ %dob )
+
+MUL ( %kvalue - 1 )
+INT
+WRITE DIR %outdir% dmgscaled_%dob%
+ENDDO
+
+*************************************
+**Read explosion files, and write them to output directory
+*************************************
+
+DO fnm wild mono*.s
+READ $fnm
+SETBB sacfnm $fnm
+SETBB dob (before .s %sacfnm )
+SETBB dob (after _ %dob )
+
+INT
+WRITE %outdir%/monoint_%dob%
+
+ENDDO
+
+
+*************************************
+**Read  explosions, add the scaled damage to them, and write the combined file to the output directory
+*************************************
+
+R %outdir%/mono*
+ADDF %outdir%/dmgscaled_077 %outdir%/dmgscaled_084  %outdir%/dmgscaled_091  %outdir%/dmgscaled_101  %outdir%/dmgscaled_110  %outdir%/dmgscaled_150 %outdir%/dmgscaled_200 %outdir%/dmgscaled_320
+WRITE  DIR %outdir CHANGE monoint Sum-K%kvalue% 
+
+*************************************
+*Determine if SUM is in phase with explosion or damage or neither
+*************************************
+MACRO ../../../../scripts/my_scripts/Mrg_v_LOGW_mod/determine_phase
+
+
+*************************************
+**Now, actually compute Mrg and write data table
+*************************************
+
+*Compute Mrg
+MACRO ../../../../../scripts/my_scripts/Mrg_v_LOGW_mod/cMrg
+
+
+*************************************
+**Plot data and perform linear fit
+*************************************
+TITLE "Mrg vs. LOG[W] for MM Source with Damage for K = %kvalue% and SDOB = 75m"
+MACRO ../../../../../scripts/my_scripts/Mrg_v_LOGW_mod/plotmrg

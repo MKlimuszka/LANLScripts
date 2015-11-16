@@ -1,0 +1,10 @@
+ TRANSCRIPT CLOSE FILE distances.txt
+ 10/16/87   	Station 1   	2.657944e+01
+ 10/16/87   	Station 2   	3.896641e+01
+ 10/16/87   	Station 3   	3.971096e+01
+ 05/06/87   	Station 1   	1.316552e+01
+ 05/06/87   	Station 2   	2.705196e-01
+ 05/06/87   	Station 3   	2.620755e+00
+ 07/17/87   	Station 1   	1.451125e+01
+ 07/17/87   	Station 2   	2.554933e+00
+ 07/17/87   	Station 3   	4.413098e-01

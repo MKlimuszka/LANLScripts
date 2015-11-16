@@ -1,0 +1,49 @@
+***Plot m v LOGW
+QDP off
+RA content xy data_k%kvalue%
+RTR
+*****Write fit data to transcript***************
+TRANSCRIPT OPEN FILE ../fit_parameters co o
+TRANSCRIPT WRITE MESSAGE "%kvalue%	 %RTR_SLP%  	 %RTR_SDSLP% 	  %RTR_YINT%		 %RTR_SDYINT% 	 %RTR_CORRCF%"
+TRANSCRIPT CLOSE  FILE ../fit_parameters
+****************************************
+RA content xy data_k%kvalue%
+SETBB TEMP ( &1,B - 2 )
+SYMBOL 2
+LINE OFF
+XLABEL "LOG[W]"
+IF %T EQ 1
+YLABEL "M_Rg"
+ELSEIF %T EQ 20
+YLABEL "M_s"
+ENDIF
+XLIM ( &1,B - 1 ) ( &1,E + 1 )
+YLIM ( &1,DEPMIN - .5 ) ( &1,DEPMAX + .5 )
+FILEID OFF
+ERASE
+SGF p M_v_LOGW_k%kvalue%
+BD sgf
+BF
+P1
+RA content xy explphase
+SYMBOL 5
+COLOR RED
+P1
+RA content xy dmgphase
+SYMBOL 7
+COLOR BLUE
+P1
+COLOR BLACK
+LINE ON
+SYMBOL OFF
+FG L %RTR_SLP %RTR_YINT BE %TEMP
+PLABEL 1 OFF
+PLABEL " Slope:  %RTR_SLP%"  S TINY P .12 .5
+PLABEL " Intercept:  %RTR_YINT%"
+PLABEL " Correlation CF:  %RTR_CORRCF%"
+P1
+EF
+cd ..
+sgftops %outdir%/*.sgf  %outdir%/M_v_LOGW_k%kvalue%.ps 2 s
+BD T
+sc rm %outdir%/*phase

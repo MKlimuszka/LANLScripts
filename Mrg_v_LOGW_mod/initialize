@@ -1,0 +1,47 @@
+**Initialize
+
+READERR NOFILES IGNORE
+BINOPERR NPTS IGNORE
+
+**************************************
+** Set up constants for Mrg
+**************************************
+
+SETBB ALPHA 5100
+SETBB RHO 2500
+SETBB RHALSQ ( %RHO * ( %ALPHA ** 2 ) )
+
+
+SETBB DELTA (DIV %DIS 111.1)
+SETBB E -1
+SETBB FC ( 0.1 / ( %T * ( %DELTA ** 0.5 ) ) )
+
+
+SETBB CONST ( ( 0.5 * ( ALOG10 ( SIN  ( ( %DELTA * ( PI ) ) / 180 ) ) ) ) - ( ALOG10 %FC ) + ( 0 * ( 1.1 * %DELTA ) ) + %E - 0.46 ) 
+
+IF %T EQ 20
+SETBB FC ( %FC * 6 )
+***M  = log(a )  + .5 * log(sin(D))+  0.0031 (20/T)^1.8 D -  0.66 log(20/T) -  log( fc) - 0.43 ,
+*** This simplifies for T = 20, and the second term is gone because of no attenuation
+SETBB CONST ( ( 0.5 * ( ALOG10 ( SIN ( ( %DELTA * ( PI ) ) / 180 ) ) ) ) - 0.43 - ( ALOG10 %FC ) )
+ENDIF
+
+***************Create transcript that will hold values for phase****
+*TRANSCRIPT CREATE FILE explphase CON O
+*TRANSCRIPT CLOSE FILE explphase CON O
+*************************************************************
+***************Create transcript that will hold values for phase****
+*TRANSCRIPT CREATE FILE dmgphase CON O
+*TRANSCRIPT CLOSE FILE dmgphase CON O
+*************************************************************
+
+*************************************
+**Choose k value and create output directory 
+*************************************
+
+Message "Enter K value times 10"
+SETBB kvalue ( $kten / 10 )
+
+
+SETBB outdir mrg_output_k-%kvalue%
+SC mkdir %outdir
